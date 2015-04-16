@@ -13,11 +13,15 @@ Ext.Ajax.defaultHeaders = {
     'Accept': 'application/json'
 };
 
+/*
+ * adds Cross-Sire Request Forgery Prevention Token to HTTP headers
+ * see: https://pve.proxmox.com/wiki/Proxmox_VE_API#Authentification
+ */
 Ext.Ajax.on('beforerequest', function(conn, options) {
     if (PVE.CSRFPreventionToken) {
-	if (!options.headers) { 
-	    options.headers = {};
-	}
+    	if (!options.headers) {
+    		options.headers = {};
+    	}
 	options.headers.CSRFPreventionToken = PVE.CSRFPreventionToken;
     }
 });
@@ -83,36 +87,36 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     render_kvm_ostype: function (value) {
-	if (!value) {
-	    return gettext('Other OS types');
-	}
-	var text = PVE.Utils.kvm_ostypes[value];
-	if (text) {
-	    return text + ' (' + value + ')';
-	}
-	return value;
+    	if (!value) {
+    		return gettext('Other OS types');
+    	}
+    	var text = PVE.Utils.kvm_ostypes[value];
+    	if (text) {
+    		return text + ' (' + value + ')';
+    	}
+    	return value;
     },
 
     render_hotplug_features: function (value) {
- 	var fa = [];
+    	var fa = [];
 
-	if (!value || (value === '0')) {
-	    return gettext('disabled');
-	}
+    	if (!value || (value === '0')) {
+    		return gettext('disabled');
+    	}
 
 	Ext.each(value.split(','), function(el) {
 	    if (el === 'disk') {
-		fa.push(gettext('Disk'));
+	    	fa.push(gettext('Disk'));
 	    } else if (el === 'network') {
-		fa.push(gettext('Network'));
+	    	fa.push(gettext('Network'));
 	    } else if (el === 'usb') {
-		fa.push(gettext('USB'));
+	    	fa.push(gettext('USB'));
 	    } else if (el === 'memory') {
-		fa.push(gettext('Memory'));
+	    	fa.push(gettext('Memory'));
 	    } else if (el === 'cpu') {
-		fa.push(gettext('CPU'));
+	    	fa.push(gettext('CPU'));
 	    } else {
-		fa.push(el);
+	    	fa.push(el);
 	    }
 	});
 
@@ -216,12 +220,12 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     kvm_keymap_array: function() {
-	var data = [['', PVE.Utils.render_kvm_language('')]];
-	Ext.Object.each(PVE.Utils.kvm_keymaps, function(key, value) {
-	    data.push([key, PVE.Utils.render_kvm_language(value)]);
-	});
+    	var data = [['', PVE.Utils.render_kvm_language('')]];
+    	Ext.Object.each(PVE.Utils.kvm_keymaps, function(key, value) {
+    		data.push([key, PVE.Utils.render_kvm_language(value)]);
+    	});
 
-	return data;
+    	return data;
     },
 
     render_console_viewer: function(value) {
@@ -261,70 +265,70 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     render_language: function (value) {
-	if (!value) {
-	    return PVE.Utils.defaultText + ' (English)';
-	}
-	var text = PVE.Utils.language_map[value];
-	if (text) {
-	    return text + ' (' + value + ')';
-	}
-	return value;
+    	if (!value) {
+    		return PVE.Utils.defaultText + ' (English)';
+    	}
+    	var text = PVE.Utils.language_map[value];
+    	if (text) {
+    		return text + ' (' + value + ')';
+    	}
+    	return value;
     },
 
     language_array: function() {
-	var data = [['', PVE.Utils.render_language('')]];
-	Ext.Object.each(PVE.Utils.language_map, function(key, value) {
-	    data.push([key, PVE.Utils.render_language(value)]);
-	});
+    	var data = [['', PVE.Utils.render_language('')]];
+    	Ext.Object.each(PVE.Utils.language_map, function(key, value) {
+    		data.push([key, PVE.Utils.render_language(value)]);
+    	});
 
-	return data;
+    	return data;
     },
 
     render_kvm_vga_driver: function (value) {
-	if (!value) {
-	    return PVE.Utils.defaultText;
-	}
-	var text = PVE.Utils.kvm_vga_drivers[value];
-	if (text) { 
-	    return text + ' (' + value + ')';
-	}
-	return value;
+    	if (!value) {
+    		return PVE.Utils.defaultText;
+    	}
+    	var text = PVE.Utils.kvm_vga_drivers[value];
+    	if (text) {
+    		return text + ' (' + value + ')';
+    	}
+    	return value;
     },
 
     kvm_vga_driver_array: function() {
-	var data = [['', PVE.Utils.render_kvm_vga_driver('')]];
-	Ext.Object.each(PVE.Utils.kvm_vga_drivers, function(key, value) {
-	    data.push([key, PVE.Utils.render_kvm_vga_driver(value)]);
-	});
+    	var data = [['', PVE.Utils.render_kvm_vga_driver('')]];
+    	Ext.Object.each(PVE.Utils.kvm_vga_drivers, function(key, value) {
+    		data.push([key, PVE.Utils.render_kvm_vga_driver(value)]);
+    	});
 
-	return data;
+    	return data;
     },
 
     render_kvm_startup: function(value) {
-	var startup = PVE.Parser.parseStartup(value);
+    	var startup = PVE.Parser.parseStartup(value);
 
-	var res = 'order=';
-	if (startup.order === undefined) {
-	    res += 'any';
-	} else {
-	    res += startup.order;
-	}
-	if (startup.up !== undefined) {
-	    res += ',up=' + startup.up;
-	}
-	if (startup.down !== undefined) {
-	    res += ',down=' + startup.down;
-	}
+    	var res = 'order=';
+    	if (startup.order === undefined) {
+    		res += 'any';
+    	} else {
+    		res += startup.order;
+    	}
+    	if (startup.up !== undefined) {
+    		res += ',up=' + startup.up;
+    	}
+    	if (startup.down !== undefined) {
+    		res += ',down=' + startup.down;
+    	}
 
-	return res;
+    	return res;
     },
 
     authOK: function() {
-	return Ext.util.Cookies.get('PVEAuthCookie');
+    	return Ext.util.Cookies.get('PVEAuthCookie');
     },
 
     authClear: function() {
-	Ext.util.Cookies.clear("PVEAuthCookie");
+    	Ext.util.Cookies.clear("PVEAuthCookie");
     },
 
     // fixme: remove - not needed?
@@ -337,22 +341,22 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     extractRequestError: function(result, verbose) {
-	var msg = gettext('Successful');
+    	var msg = gettext('Successful');
 
-	if (!result.success) {
-	    msg = gettext("Unknown error");
+    	if (!result.success) {
+    		msg = gettext("Unknown error");
 	    if (result.message) {
-		msg = result.message;
-		if (result.status) {
-		    msg += ' (' + result.status + ')';
-		}
+	    	msg = result.message;
+	    	if (result.status) {
+	    		msg += ' (' + result.status + ')';
+	    	}
 	    }
 	    if (verbose && Ext.isObject(result.errors)) {
-		msg += "<br>";
-		Ext.Object.each(result.errors, function(prop, desc) {
-		    msg += "<br><b>" + Ext.htmlEncode(prop) + "</b>: " + 
-			Ext.htmlEncode(desc);
-		});
+	    	msg += "<br>";
+	    	Ext.Object.each(result.errors, function(prop, desc) {
+	    		msg += "<br><b>" + Ext.htmlEncode(prop) + "</b>: " +
+	    		Ext.htmlEncode(desc);
+	    	});
 	    }	
 	}
 
@@ -360,84 +364,101 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     extractFormActionError: function(action) {
-	var msg;
-	switch (action.failureType) {
-	case Ext.form.action.Action.CLIENT_INVALID:
-	    msg = gettext('Form fields may not be submitted with invalid values');
-	    break;
-	case Ext.form.action.Action.CONNECT_FAILURE:
-	    msg = gettext('Connection error');
-	    var resp = action.response;
-	    if (resp.status && resp.statusText) {
-		msg += " " + resp.status + ": " + resp.statusText;
-	    }
-	    break;
-	case Ext.form.action.Action.LOAD_FAILURE:
-	case Ext.form.action.Action.SERVER_INVALID:
-	    msg = PVE.Utils.extractRequestError(action.result, true);
-	    break;
-	}
-	return msg;
+		var msg;
+		switch (action.failureType) {
+		case Ext.form.action.Action.CLIENT_INVALID:
+		    msg = gettext('Form fields may not be submitted with invalid values');
+		    break;
+		case Ext.form.action.Action.CONNECT_FAILURE:
+		    msg = gettext('Connection error');
+		    var resp = action.response;
+		    	if (resp.status && resp.statusText) {
+		    		msg += " " + resp.status + ": " + resp.statusText;
+		    	}
+		    break;
+		case Ext.form.action.Action.LOAD_FAILURE:
+		case Ext.form.action.Action.SERVER_INVALID:
+		    msg = PVE.Utils.extractRequestError(action.result, true);
+		    break;
+		}
+		return msg;
     },
 
-    // Ext.Ajax.request
+    /* Makes an ajax call to the pve api2 server
+     * extends Ext.Ajax.request
+     * 
+     * For instance, to get a an array of the available authenfication domains,
+     * you would call :
+     * 
+     * PVE.Utils.API2Request({
+     * 		url: '/access/domains',
+     * 		method: 'GET', 
+     * 		success: function(response) {
+     * 			authDomains = response.result.data;
+     * 			} 
+     * });
+     * 
+     */
+     
     API2Request: function(reqOpts) {
-
-	var newopts = Ext.apply({
-	    waitMsg: gettext('Please wait...')
-	}, reqOpts);
-
-	if (!newopts.url.match(/^\/api2/)) {
-	    newopts.url = '/api2/extjs' + newopts.url;
-	}
-	delete newopts.callback;
-
-	var createWrapper = function(successFn, callbackFn, failureFn) {
-	    Ext.apply(newopts, {
-		success: function(response, options) {
-		    if (options.waitMsgTarget) {
-			if (PVE.Utils.toolkit === 'touch') {
-			    options.waitMsgTarget.setMasked(false);
-			} else {
-			    options.waitMsgTarget.setLoading(false);
-			}
-		    }
-		    var result = Ext.decode(response.responseText);
-		    response.result = result;
-		    if (!result.success) {
-			response.htmlStatus = PVE.Utils.extractRequestError(result, true);
-			Ext.callback(callbackFn, options.scope, [options, false, response]);
-			Ext.callback(failureFn, options.scope, [response, options]);
-			return;
-		    }
-		    Ext.callback(callbackFn, options.scope, [options, true, response]);
-		    Ext.callback(successFn, options.scope, [response, options]);
-		},
-		failure: function(response, options) {
-		    if (options.waitMsgTarget) {
-			if (PVE.Utils.toolkit === 'touch') {
-			    options.waitMsgTarget.setMasked(false);
-			} else {
-			    options.waitMsgTarget.setLoading(false);
-			}
-		    }
-		    response.result = {};
-		    try {
-			response.result = Ext.decode(response.responseText);
-		    } catch(e) {}
-		    var msg = gettext('Connection error') + ' - server offline?';
-		    if (response.aborted) {
-			msg = gettext('Connection error') + ' - aborted.';
-		    } else if (response.timedout) {
-			msg = gettext('Connection error') + ' - Timeout.';
-		    } else if (response.status && response.statusText) {
-			msg = gettext('Connection error') + ' ' + response.status + ': ' + response.statusText;
-		    }
-		    response.htmlStatus = msg;
-		    Ext.callback(callbackFn, options.scope, [options, false, response]);
-		    Ext.callback(failureFn, options.scope, [response, options]);
+	
+		var newopts = Ext.apply({
+		    waitMsg: gettext('Please wait...')
+		}, reqOpts);
+	
+		if (!newopts.url.match(/^\/api2/)) {
+		    newopts.url = '/api2/extjs' + newopts.url;
 		}
-	    });
+		delete newopts.callback;
+	
+		var createWrapper = function(successFn, callbackFn, failureFn) {
+		    Ext.apply(newopts, {
+		    	success: function(response, options) {
+		    		if (options.waitMsgTarget) {
+		    			if (PVE.Utils.toolkit === 'touch') {
+		    				options.waitMsgTarget.setMasked(false);
+		    			} else {
+		    				options.waitMsgTarget.setLoading(false);
+		    			}
+		    		}
+			    
+		    		var result = Ext.decode(response.responseText);
+		    		response.result = result;
+		    		if (!result.success) {
+		    			response.htmlStatus = PVE.Utils.extractRequestError(result, true);
+		    			Ext.callback(callbackFn, options.scope, [options, false, response]);
+		    			Ext.callback(failureFn, options.scope, [response, options]);
+		    			return;
+		    		}
+		    		Ext.callback(callbackFn, options.scope, [options, true, response]);
+		    		Ext.callback(successFn, options.scope, [response, options]);
+			},
+			
+			failure: function(response, options) {
+			    if (options.waitMsgTarget) {
+			    	if (PVE.Utils.toolkit === 'touch') {
+			    		options.waitMsgTarget.setMasked(false);
+			    	} else {
+			    		options.waitMsgTarget.setLoading(false);
+					}
+			    }
+			    response.result = {};
+			    try {
+			    	response.result = Ext.decode(response.responseText);
+			    } catch(e) {}
+			    var msg = gettext('Connection error') + ' - server offline?';
+			    if (response.aborted) {
+			    	msg = gettext('Connection error') + ' - aborted.';
+			    } else if (response.timedout) {
+			    	msg = gettext('Connection error') + ' - Timeout.';
+			    } else if (response.status && response.statusText) {
+			    	msg = gettext('Connection error') + ' ' + response.status + ': ' + response.statusText;
+			    }
+			    response.htmlStatus = msg;
+			    Ext.callback(callbackFn, options.scope, [options, false, response]);
+			    Ext.callback(failureFn, options.scope, [response, options]);
+			}
+		});
 	};
 
 	createWrapper(reqOpts.success, reqOpts.callback, reqOpts.failure);
@@ -445,10 +466,10 @@ Ext.define('PVE.Utils', { statics: {
 	var target = newopts.waitMsgTarget;
 	if (target) {
 	    if (PVE.Utils.toolkit === 'touch') {
-		target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg} );
+	    	target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg} );
 	    } else {
 		// Note: ExtJS bug - this does not work when component is not rendered
-		target.setLoading(newopts.waitMsg);
+	    	target.setLoading(newopts.waitMsg);
 	    }
 	}
 	Ext.Ajax.request(newopts);
@@ -480,23 +501,23 @@ Ext.define('PVE.Utils', { statics: {
 	    method: 'GET',
 	    //waitMsgTarget: me,
 	    failure: function(response, opts) {
-		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+	    	Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 	    },
 	    success: function(response, opts) {
 		var data = response.result.data;
 
 		if (data.status !== 'Active') {
 		    Ext.Msg.show({
-			title: gettext('No valid subscription'),
-			icon: Ext.Msg.WARNING,
-			msg: PVE.Utils.noSubKeyHtml,
-			buttons: Ext.Msg.OK,
-			callback: function(btn) {
-			    if (btn !== 'ok') {
-				return;
-			    }
+		    	title: gettext('No valid subscription'),
+		    	icon: Ext.Msg.WARNING,
+		    	msg: PVE.Utils.noSubKeyHtml,
+		    	buttons: Ext.Msg.OK,
+		    	callback: function(btn) {
+		    		if (btn !== 'ok') {
+		    			return;
+		    		}
 			    orig_cmd();
-			}
+		    	}
 		    });
 		} else {
 		    orig_cmd();
@@ -751,34 +772,34 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     format_boolean_with_default: function(value) {
-	if (Ext.isDefined(value) && value !== '') {
-	    return value ? PVE.Utils.yesText : PVE.Utils.noText;
-	}
+    	if (Ext.isDefined(value) && value !== '') {
+    		return value ? PVE.Utils.yesText : PVE.Utils.noText;
+    	}
 	return PVE.Utils.defaultText;
     },
 
     format_boolean: function(value) {
-	return value ? PVE.Utils.yesText : PVE.Utils.noText;
+    	return value ? PVE.Utils.yesText : PVE.Utils.noText;
     },
 
     format_neg_boolean: function(value) {
-	return !value ? PVE.Utils.yesText : PVE.Utils.noText;
+    	return !value ? PVE.Utils.yesText : PVE.Utils.noText;
     },
 
     format_content_types: function(value) {
-	var cta = [];
+    	var cta = [];
 
-	Ext.each(value.split(',').sort(), function(ct) {
-	    if (ct === 'images') {
-		cta.push(PVE.Utils.imagesText);
-	    } else if (ct === 'backup') {
-		cta.push(PVE.Utils.backupFileText);
-	    } else if (ct === 'vztmpl') {
-		cta.push(PVE.Utils.vztmplText);
-	    } else if (ct === 'iso') {
-		cta.push(PVE.Utils.isoImageText);
-	    } else if (ct === 'rootdir') {
-		cta.push(PVE.Utils.containersText);
+    	Ext.each(value.split(',').sort(), function(ct) {
+    		if (ct === 'images') {
+    			cta.push(PVE.Utils.imagesText);
+    		} else if (ct === 'backup') {
+    			cta.push(PVE.Utils.backupFileText);
+    		} else if (ct === 'vztmpl') {
+    			cta.push(PVE.Utils.vztmplText);
+    		} else if (ct === 'iso') {
+	    		cta.push(PVE.Utils.isoImageText);
+    		} else if (ct === 'rootdir') {
+	    		cta.push(PVE.Utils.containersText);
 	    }
 	});
 
@@ -786,107 +807,104 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     render_storage_content: function(value, metaData, record) {
-	var data = record.data;
-	if (Ext.isNumber(data.channel) &&
+    	var data = record.data;
+    	if (Ext.isNumber(data.channel) &&
 	    Ext.isNumber(data.id) &&
 	    Ext.isNumber(data.lun)) {
-	    return "CH " + 
-		Ext.String.leftPad(data.channel,2, '0') + 
-		" ID " + data.id + " LUN " + data.lun;
-	}
-	return data.volid.replace(/^.*:(.*\/)?/,'');
+    		return "CH " + Ext.String.leftPad(data.channel,2, '0') + 
+    		" ID " + data.id + " LUN " + data.lun;
+    	}
+    	return data.volid.replace(/^.*:(.*\/)?/,'');
     },
 
     render_serverity: function (value) {
-	return PVE.Utils.log_severity_hash[value] || value;
+    	return PVE.Utils.log_severity_hash[value] || value;
     },
 
     render_cpu: function(value, metaData, record, rowIndex, colIndex, store) {
 
-	if (!(record.data.uptime && Ext.isNumeric(value))) {
-	    return '';
-	}
+    	if (!(record.data.uptime && Ext.isNumeric(value))) {
+    		return '';
+    	}
 
-	var maxcpu = record.data.maxcpu || 1;
+    	var maxcpu = record.data.maxcpu || 1;
 
-	if (!Ext.isNumeric(maxcpu) && (maxcpu >= 1)) {
-	    return '';
-	}
+    	if (!Ext.isNumeric(maxcpu) && (maxcpu >= 1)) {
+    		return '';
+    	}
 	
-	var per = value * 100;
+    	var per = value * 100;
 
-	return per.toFixed(1) + '% of ' + maxcpu.toString() + (maxcpu > 1 ? 'CPUs' : 'CPU');
+    	return per.toFixed(1) + '% of ' + maxcpu.toString() + (maxcpu > 1 ? 'CPUs' : 'CPU');
     },
 
     render_size: function(value, metaData, record, rowIndex, colIndex, store) {
 	/*jslint confusion: true */
 
-	if (!Ext.isNumeric(value)) {
-	    return '';
-	}
+    	if (!Ext.isNumeric(value)) {
+    		return '';
+    	}
 
-	return PVE.Utils.format_size(value);
+    	return PVE.Utils.format_size(value);
     },
 
     render_timestamp: function(value, metaData, record, rowIndex, colIndex, store) {
-	var servertime = new Date(value * 1000);
-	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
+    		var servertime = new Date(value * 1000);
+    		return Ext.Date.format(servertime, 'Y-m-d H:i:s');
     },
 
     render_mem_usage: function(value, metaData, record, rowIndex, colIndex, store) {
 
-	var mem = value;
-	var maxmem = record.data.maxmem;
+    	var mem = value;
+    	var maxmem = record.data.maxmem;
 	
-	if (!record.data.uptime) {
+    	if (!record.data.uptime) {
 	    return '';
-	}
+    	}
 
-	if (!(Ext.isNumeric(mem) && maxmem)) {
-	    return '';
-	}
+    	if (!(Ext.isNumeric(mem) && maxmem)) {
+    		return '';
+    	}
 
-	var per = (mem * 100) / maxmem;
-
-	return per.toFixed(1) + '%';
+    	var per = (mem * 100) / maxmem;
+    	return per.toFixed(1) + '%';
     },
 
     render_disk_usage: function(value, metaData, record, rowIndex, colIndex, store) {
 
-	var disk = value;
-	var maxdisk = record.data.maxdisk;
+    	var disk = value;
+    	var maxdisk = record.data.maxdisk;
 
-	if (!(Ext.isNumeric(disk) && maxdisk)) {
-	    return '';
-	}
+    	if (!(Ext.isNumeric(disk) && maxdisk)) {
+    		return '';
+    	}
 
-	var per = (disk * 100) / maxdisk;
+    	var per = (disk * 100) / maxdisk;
 
-	return per.toFixed(1) + '%';
+    	return per.toFixed(1) + '%';
     },
 
     render_resource_type: function(value, metaData, record, rowIndex, colIndex, store) {
 
-	var cls = 'pve-itype-icon-' + value;
+    	var cls = 'pve-itype-icon-' + value;
 
-	if (record.data.running) {
-	    metaData.tdCls = cls + "-running";
-	} else if (record.data.template) {
-	    metaData.tdCls = cls + "-template";	    
-	} else {
-	    metaData.tdCls = cls;
-	}
-
-	return value;
+    	if (record.data.running) {
+    		metaData.tdCls = cls + "-running";
+    	} else if (record.data.template) {
+    		metaData.tdCls = cls + "-template";	    
+    	} else {
+    		metaData.tdCls = cls;
+    	}
+    	return value;
     },
 
     render_uptime: function(value, metaData, record, rowIndex, colIndex, store) {
 
-	var uptime = value;
+    	var uptime = value;
 
-	if (uptime === undefined) {
-	    return '';
-	}
+    	if (uptime === undefined) {
+    		return '';
+    	}
 	
 	if (uptime <= 0) {
 	    return '-';
@@ -896,181 +914,184 @@ Ext.define('PVE.Utils', { statics: {
     },
 
     render_support_level: function(value, metaData, record) {
-	return PVE.Utils.support_level_hash[value] || '-';
+    	return PVE.Utils.support_level_hash[value] || '-';
     },
 
     render_upid: function(value, metaData, record) { 
-	var type = record.data.type;
-	var id = record.data.id;
+    	var type = record.data.type;
+    	var id = record.data.id;
 
-	return PVE.Utils.format_task_description(type, id);
+    	return PVE.Utils.format_task_description(type, id);
     },
 
     dialog_title: function(subject, create, isAdd) {
-	if (create) {
-	    if (isAdd) {
-		return gettext('Add') + ': ' + subject;
-	    } else {
-		return gettext('Create') + ': ' + subject;
-	    }
-	} else {
-	    return gettext('Edit') + ': ' + subject;
-	}
+    	if (create) {
+    		if (isAdd) {
+    			return gettext('Add') + ': ' + subject;
+    		} else {
+    			return gettext('Create') + ': ' + subject;
+    		}
+    	}
+    	else {
+    		return gettext('Edit') + ': ' + subject;
+    	}
     },
  
     openDefaultConsoleWindow: function(allowSpice, vmtype, vmid, nodename, vmname) {
-	var dv = PVE.Utils.defaultViewer(allowSpice);
-	PVE.Utils.openConsoleWindow(dv, vmtype, vmid, nodename, vmname);
+    	var dv = PVE.Utils.defaultViewer(allowSpice);
+    	PVE.Utils.openConsoleWindow(dv, vmtype, vmid, nodename, vmname);
     },
 
     openConsoleWindow: function(viewer, vmtype, vmid, nodename, vmname) {
 	// kvm, openvz, shell, upgrade
 
-	if (vmid == undefined && (vmtype === 'kvm' || vmtype === 'openvz')) {
-	    throw "missing vmid";
-	}
+    	if (vmid == undefined && (vmtype === 'kvm' || vmtype === 'openvz')) {
+    		throw "missing vmid";
+    	}
 
-	if (!nodename) {
-	    throw "no nodename specified";
-	}
+    	if (!nodename) {
+    		throw "no nodename specified";
+    	}
 
-	if (viewer === 'applet' || viewer === 'html5') {
-	    PVE.Utils.openVNCViewer(vmtype, vmid, nodename, vmname, viewer === 'html5');
-	} else if (viewer === 'vv') {
-	    var url;
-	    var params = { proxy: window.location.hostname };
-	    if (vmtype === 'kvm') {
-		url = '/nodes/' + nodename + '/qemu/' + vmid.toString() + '/spiceproxy';
-		PVE.Utils.openSpiceViewer(url, params);
-	    } else if (vmtype === 'openvz') {
-		url = '/nodes/' + nodename + '/openvz/' + vmid.toString() + '/spiceproxy';
-		PVE.Utils.openSpiceViewer(url, params);
-	    } else if (vmtype === 'shell') {
-		url = '/nodes/' + nodename + '/spiceshell';
-		PVE.Utils.openSpiceViewer(url, params);
-	    } else if (vmtype === 'upgrade') {
-		url = '/nodes/' + nodename + '/spiceshell';
-		params.upgrade = 1;
-		PVE.Utils.openSpiceViewer(url, params);
-	    }
-	} else {
-	    throw "unknown viewer type";
-	}
+    	if (viewer === 'applet' || viewer === 'html5') {
+    		PVE.Utils.openVNCViewer(vmtype, vmid, nodename, vmname, viewer === 'html5');
+    	} else if (viewer === 'vv') {
+    		var url;
+    		var params = { proxy: window.location.hostname };
+    		if (vmtype === 'kvm') {
+    			url = '/nodes/' + nodename + '/qemu/' + vmid.toString() + '/spiceproxy';
+    			PVE.Utils.openSpiceViewer(url, params);
+    		} else if (vmtype === 'openvz') {
+    			url = '/nodes/' + nodename + '/openvz/' + vmid.toString() + '/spiceproxy';
+    			PVE.Utils.openSpiceViewer(url, params);
+    		} else if (vmtype === 'shell') {
+    			url = '/nodes/' + nodename + '/spiceshell';
+    			PVE.Utils.openSpiceViewer(url, params);
+    		} else if (vmtype === 'upgrade') {
+    			url = '/nodes/' + nodename + '/spiceshell';
+    			params.upgrade = 1;
+    			PVE.Utils.openSpiceViewer(url, params);
+    		}
+    	} else {
+    		throw "unknown viewer type";
+    	}
     },
-
+    
+    /*
+     * returns html5 at the moment
+     */
     defaultViewer: function(allowSpice) {
-	var vncdefault = 'html5';
-	var dv = PVE.VersionInfo.console || vncdefault;
-	if (dv === 'vv' && !allowSpice) {
-	    dv = vncdefault;
-	}
+    	var vncdefault = 'html5';
+    	var dv = PVE.VersionInfo.console || vncdefault;
+    	if (dv === 'vv' && !allowSpice) {
+    		dv = vncdefault;
+    	}
 
-	return dv;
+    	return dv;
     },
 
     openVNCViewer: function(vmtype, vmid, nodename, vmname, novnc) {
-	var url = Ext.urlEncode({
-	    console: vmtype, // kvm, openvz, upgrade or shell
-	    novnc: novnc ? 1 : 0,
-	    vmid: vmid,
-	    vmname: vmname,
-	    node: nodename
-	});
-	var nw = window.open("?" + url, '_blank', "innerWidth=745,innerheight=427");
-	nw.focus();
+    	var url = Ext.urlEncode({
+    		console: vmtype, // kvm, openvz, upgrade or shell
+    		novnc: novnc ? 1 : 0,
+    		vmid: vmid,
+    		vmname: vmname,
+    		node: nodename
+    	});
+    	var nw = window.open("?" + url, '_blank', "innerWidth=745,innerheight=427");
+    	nw.focus();
     },
 
     openSpiceViewer: function(url, params){
+	
+		var downloadWithName = function(uri, name) {
+		    var link = Ext.DomHelper.append(document.body, {
+		    	tag: 'a',
+		    	href: uri,
+		    	css : 'display:none;visibility:hidden;height:0px;'
+		    });
+	
+		    // Note: we need to tell android the correct file name extension
+		    // but we do not set 'download' tag for other environments, because
+		    // It can have strange side effects (additional user prompt on firefox)
+		    var andriod = navigator.userAgent.match(/Android/i) ? true : false;
+		    if (andriod) {
+		    	link.download = name;
+		    }
+	
+		    if (link.fireEvent) {
+		    	link.fireEvent('onclick');
+		    } else {
+		    	var evt = document.createEvent("MouseEvents");
+	            evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+	            link.dispatchEvent(evt);
+		    }
+		};
 
-	var downloadWithName = function(uri, name) {
-	    var link = Ext.DomHelper.append(document.body, {
-		tag: 'a',
-		href: uri,
-		css : 'display:none;visibility:hidden;height:0px;'
-	    });
-
-	    // Note: we need to tell android the correct file name extension
-	    // but we do not set 'download' tag for other environments, because
-	    // It can have strange side effects (additional user prompt on firefox)
-	    var andriod = navigator.userAgent.match(/Android/i) ? true : false;
-	    if (andriod) {
-		link.download = name;
-	    }
-
-	    if (link.fireEvent) {
-		link.fireEvent('onclick');
-	    } else {
-                var evt = document.createEvent("MouseEvents");
-                evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-		link.dispatchEvent(evt);
-	    }
-	};
-
-	PVE.Utils.API2Request({
-	    url: url,
-	    params: params,
-	    method: 'POST',
-	    failure: function(response, opts){
-		Ext.Msg.alert('Error', response.htmlStatus);
-	    },
-	    success: function(response, opts){
-		var raw = "[virt-viewer]\n";
-		Ext.Object.each(response.result.data, function(k, v) {
-		    raw += k + "=" + v + "\n";
+		PVE.Utils.API2Request({
+		    url: url,
+		    params: params,
+		    method: 'POST',
+		    failure: function(response, opts){
+		    	Ext.Msg.alert('Error', response.htmlStatus);
+		    },
+		    success: function(response, opts){
+		    	var raw = "[virt-viewer]\n";
+		    	Ext.Object.each(response.result.data, function(k, v) {
+		    		raw += k + "=" + v + "\n";
+		    	});
+		    	var url = 'data:application/x-virt-viewer;charset=UTF-8,' +
+			    encodeURIComponent(raw);
+		    	downloadWithName(url, "pve-spice.vv");
+		    }
 		});
-		var url = 'data:application/x-virt-viewer;charset=UTF-8,' +
-		    encodeURIComponent(raw);
-		    
-		downloadWithName(url, "pve-spice.vv");
-	    }
-	});
     },
 
     // comp.setLoading() is buggy in ExtJS 4.0.7, so we 
     // use el.mask() instead
     setErrorMask: function(comp, msg) {
-	var el = comp.el;
-	if (!el) {
-	    return;
-	}
-	if (!msg) {
-	    el.unmask();
-	} else {
-	    if (msg === true) {
-		el.mask(gettext("Loading..."));
-	    } else {
-		el.mask(msg);
-	    }
-	}
+    	var el = comp.el;
+    	if (!el) {
+    		return;
+    	}
+    	if (!msg) {
+    		el.unmask();
+    	} else {
+    		if (msg === true) {
+    			el.mask(gettext("Loading..."));
+    		} else {
+    			el.mask(msg);
+    		}
+    	}
     },
 
     monStoreErrors: function(me, store) {
-	me.mon(store, 'beforeload', function(s, operation, eOpts) {
-	    if (!me.loadCount) {
-		me.loadCount = 0; // make sure it is numeric
-		PVE.Utils.setErrorMask(me, true);
-	    }
-	});
+    	me.mon(store, 'beforeload', function(s, operation, eOpts) {
+    		if (!me.loadCount) {
+    			me.loadCount = 0; // make sure it is numeric
+    			PVE.Utils.setErrorMask(me, true);
+    		}
+    	});
 
-	// only works with 'pve' proxy
-	me.mon(store.proxy, 'afterload', function(proxy, request, success) {
-	    me.loadCount++;
-
-	    if (success) {
-		PVE.Utils.setErrorMask(me, false);
-		return;
-	    }
-
-	    var msg;
-	    var operation = request.operation;
-	    var error = operation.getError();
-	    if (error.statusText) {
-		msg = error.statusText + ' (' + error.status + ')';
-	    } else {
-		msg = gettext('Connection error');
-	    }
-	    PVE.Utils.setErrorMask(me, msg);
-	});
+		// only works with 'pve' proxy
+		me.mon(store.proxy, 'afterload', function(proxy, request, success) {
+		    me.loadCount++;
+	
+		    if (success) {
+		    	PVE.Utils.setErrorMask(me, false);
+		    	return;
+		    }
+	
+		    var msg;
+		    var operation = request.operation;
+		    var error = operation.getError();
+		    if (error.statusText) {
+		    	msg = error.statusText + ' (' + error.status + ')';
+		    } else {
+		    	msg = gettext('Connection error');
+		    }
+		    PVE.Utils.setErrorMask(me, msg);
+		});
     }
 
 }});
